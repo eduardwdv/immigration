@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NI Generator by Eduardo IT GUY from SUPPORT TEAM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NI Generator by Eduardo IT GUY from SUPPORT TEAM</h1>
+        <input type="text" id="nome" placeholder="Digite um nome">
+        <button onclick="formatarNome()">Make a Magic</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        function formatarNome() {
+            const nomeInput = document.getElementById("nome");
+            const resultadoDiv = document.getElementById("resultado");
+
+            // Obtém o valor do input e divide em palavras
+            const palavras = nomeInput.value.split(" ");
+
+            // Verifica se há pelo menos duas palavras (nome e sobrenome)
+            if (palavras.length >= 2) {
+                // Pega o último nome e coloca em caixa alta com uma vírgula
+                const ultimoNome = palavras[palavras.length - 1].toUpperCase() + ",";
+                
+                // Pega o primeiro nome e coloca a primeira letra em maiúscula
+                const primeiroNome = palavras[0].charAt(0).toUpperCase() + palavras[0].slice(1).toLowerCase();
+                
+                // Exibe o resultado formatado
+                resultadoDiv.textContent = ultimoNome + " " + primeiroNome;
+            } else {
+                resultadoDiv.textContent = "Digite um nome completo com pelo menos um nome e um sobrenome.";
+            }
+        }
+    </script>
+</body>
+</html>
