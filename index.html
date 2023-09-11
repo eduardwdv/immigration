@@ -2,10 +2,13 @@
 <html>
 <head>
     <title>NI Generator by Eduardo IT GUY from SUPPORT TEAM</title>
+    <meta charset="UTF-8">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
         .container {
             text-align: center;
@@ -14,17 +17,29 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            margin: 0 auto;
         }
         h1 {
             color: #333;
         }
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
         input[type="text"] {
+            flex-grow: 1;
             padding: 10px;
-            width: 300px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-right: 10px;
+        }
+        label {
+            flex-grow: 0;
+            font-size: 16px;
         }
         button {
             padding: 10px 20px;
@@ -50,18 +65,33 @@
 <body>
     <div class="container">
         <h1>NI Generator by Eduardo IT GUY from SUPPORT TEAM</h1>
-        <input type="text" id="nome" placeholder="Digite um nome">
+        <div class="input-container">
+            <input type="text" id="nome" placeholder="Digite um nome">
+            <label for="removerAcentos">Remover Acentos</label>
+            <input type="checkbox" id="removerAcentos" checked>
+        </div>
         <button onclick="formatarNome()">Make a Magic</button>
         <div id="resultado"></div>
     </div>
 
     <script>
+        function removerAcentos(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
         function formatarNome() {
             const nomeInput = document.getElementById("nome");
+            const removerAcentosCheckbox = document.getElementById("removerAcentos");
             const resultadoDiv = document.getElementById("resultado");
 
-            // Obtém o valor do input e divide em palavras
-            const palavras = nomeInput.value.split(" ");
+            // Obtém o valor do input e remove acentos se a opção estiver marcada
+            let nome = nomeInput.value;
+            if (removerAcentosCheckbox.checked) {
+                nome = removerAcentos(nome);
+            }
+
+            // Divide em palavras
+            const palavras = nome.split(" ");
 
             // Verifica se há pelo menos duas palavras (nome e sobrenome)
             if (palavras.length >= 2) {
