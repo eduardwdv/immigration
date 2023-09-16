@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>NI Standardizer</title>
@@ -54,23 +55,6 @@
             background-color: #0056b3;
         }
         .resultado {
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 18px;
-            color: #333;
-        }
-        /* Upper and Lowercase transformation */
-        .transform-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        #removerAcentosTransform {
-            flex-grow: 0;
-            font-size: 16px;
-        }
-        .resultado-transform {
             margin-top: 20px;
             font-weight: bold;
             font-size: 18px;
@@ -214,8 +198,22 @@
                 
                 // Displays the formatted result
                 resultDiv.textContent = penultimateName + " " + firstName + " " + secondName;
+            }
+            // Check that there are exactly 3 names
+            else if (words.length === 3) {
+                // Take the last name in uppercase
+                const lastName = words[2].toUpperCase();
+
+                // Take the first name and capitalize it
+                const firstName = words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
+
+                // Take the second name and capitalize it
+                const secondName = words[1].charAt(0).toUpperCase() + words[1].slice(1).toLowerCase();
+
+                // Displays the formatted result
+                resultDiv.textContent = lastName + ", " + firstName + " " + secondName;
             } else {
-                resultDiv.textContent = "Enter a full name with at least 4 names.";
+                resultDiv.textContent = "Enter a full name with at least 4 names or exactly 3 names.";
             }
         }
     </script>
