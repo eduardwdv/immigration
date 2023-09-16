@@ -43,7 +43,7 @@
         button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #007bff;
+            background-color: #8a3c3d;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -51,12 +51,19 @@
             transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #6a2c2d;
         }
         .resultado {
             margin-top: 20px;
             font-weight: bold;
             font-size: 18px;
+            color: #333;
+        }
+        /* Estilo adicional para a saída UPPERCASE */
+        .resultado-uppercase {
+            font-size: 18px;
+            margin-top: 20px;
+            font-weight: bold;
             color: #333;
         }
     </style>
@@ -93,7 +100,7 @@
         </div>
         <button onclick="transformToUppercase()">UPPERCASE IT</button>
         <button onclick="transformToLowercase()">lowercase it</button>
-        <div class="resultado-transform" id="result-transform"></div>
+        <div class="resultado" id="result-transform"></div>
     </div>
 
     <script>
