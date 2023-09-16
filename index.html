@@ -1,7 +1,6 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <title>NI Generator by Eduardo IT GUY from SUPPORT TEAM</title>
+    <title>NI Standardizer</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -29,7 +28,7 @@
             align-items: center;
             margin-bottom: 20px;
         }
-        input[type="text"] {
+        input[type="text"], textarea {
             flex-grow: 1;
             padding: 10px;
             font-size: 16px;
@@ -64,16 +63,8 @@
         .transform-buttons {
             display: flex;
             justify-content: space-between;
-            align-items: center; /* Adicionado alinhamento vertical */
-            margin-bottom: 20px; /* Espaço abaixo do container */
-        }
-        textarea {
-            flex-grow: 1;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: 10px;
+            align-items: center;
+            margin-bottom: 20px;
         }
         #removerAcentosTransform {
             flex-grow: 0;
@@ -89,25 +80,36 @@
 </head>
 <body>
     <div class="container">
-        <h1>NI Generator by Eduardo IT GUY from SUPPORT TEAM</h1>
+        <h1>NI Standardizer</h1>
         <div class="input-container">
             <input type="text" id="nome" placeholder="Enter the full name">
             <label for="removerAcentos">Remove Accentuation</label>
             <input type="checkbox" id="removerAcentos" checked>
         </div>
-        <button onclick="formatName()">Make a Magic</button>
+        <button onclick="formatName()">STANDARDIZER</button>
         <div class="resultado" id="result"></div>
     </div>
 
     <div class="container">
-        <h1>Uppercase and Lowercase One Click</h1>
+        <h1>NI Standardizer Spanish Way</h1>
+        <div class="input-container">
+            <input type="text" id="spanishName" placeholder="Enter the full name">
+            <label for="removerAcentosSpanish">Remove Accentuation</label>
+            <input type="checkbox" id="removerAcentosSpanish" checked>
+        </div>
+        <button onclick="formatSpanishName()">STANDARDIZER</button>
+        <div class="resultado" id="result-spanish"></div>
+    </div>
+
+    <div class="container">
+        <h1>UPPERCASE and Lowercase ONE CLICK</h1>
         <div class="input-container">
             <textarea id="textToTransform" placeholder="Paste the text here"></textarea>
             <label for="removerAcentosTransform">Remove Accentuation</label>
             <input type="checkbox" id="removerAcentosTransform" checked>
         </div>
-        <button onclick="transformToUppercase()">Make it UPPERCASE</button>
-        <button onclick="transformToLowercase()">Make it lowercase</button>
+        <button onclick="transformToUppercase()">UPPERCASE IT</button>
+        <button onclick="transformToLowercase()">lowercase it</button>
         <div class="resultado-transform" id="result-transform"></div>
     </div>
 
@@ -130,7 +132,7 @@
             // Break it down into words
             const words = name.split(" ");
 
-            // Check that there are at least two words (first and last name)
+            // Check that there are at least 2 words (first and last name)
             if (words.length >= 2) {
                 // Take the last name and capitalize it with a comma
                 const lastName = words[words.length - 1].toUpperCase() + ",";
@@ -184,80 +186,38 @@
             // Displays the result
             resultDiv.textContent = lowercaseText;
         }
+
+        function formatSpanishName() {
+            const spanishNameInput = document.getElementById("spanishName");
+            const removeAccentsCheckbox = document.getElementById("removerAcentosSpanish");
+            const resultDiv = document.getElementById("result-spanish");
+
+            // Gets the input value and removes accents if the option is checked
+            let name = spanishNameInput.value;
+            if (removeAccentsCheckbox.checked) {
+                name = removeAccents(name);
+            }
+
+            // Break it down into words
+            const words = name.split(" ");
+
+            // Check that there are at least 4 names
+            if (words.length >= 4) {
+                // Take the last name (penultimate name) and capitalize it with a comma
+                const penultimateName = words[words.length - 2].toUpperCase() + ",";
+                
+                // Take the first name and capitalize it
+                const firstName = words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
+                
+                // Take the second name and capitalize it
+                const secondName = words[1].charAt(0).toUpperCase() + words[1].slice(1).toLowerCase();
+                
+                // Displays the formatted result
+                resultDiv.textContent = penultimateName + " " + firstName + " " + secondName;
+            } else {
+                resultDiv.textContent = "Enter a full name with at least 4 names.";
+            }
+        }
     </script>
-<div class="container">
-    <h1>Number to Words Converter</h1>
-    <div class="input-container">
-        <input type="number" id="numberInput" placeholder="Enter a number">
-    </div>
-    <button onclick="convertToWords()">Convert to Words</button>
-    <p id="resultWords"></p>
-</div>
-
-<script>
-    function convertToWords() {
-        const numberInput = document.getElementById("numberInput");
-        const resultDivWords = document.getElementById("resultWords");
-
-        // Obtém o valor do número
-        const number = parseFloat(numberInput.value);
-
-        if (isNaN(number)) {
-            // Lida com entradas inválidas
-            resultDivWords.textContent = "Invalid input. Please enter a valid number.";
-            return;
-        }
-
-        // Converte o número para palavras
-        const words = convertNumberToWords(number);
-
-        // Exibe o resultado formatado
-        resultDivWords.textContent = "In Words: " + words;
-    }
-
-    function convertNumberToWords(number) {
-        // simple way
-        const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-        const teens = ["", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
-        const tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
-
-        if (number === 0) {
-            return "zero";
-        }
-
-        let words = "";
-
-        if (number >= 1000) {
-            words += convertNumberToWords(Math.floor(number / 1000)) + " thousand ";
-            number %= 1000;
-        }
-
-        if (number >= 100) {
-            words += ones[Math.floor(number / 100)] + " hundred ";
-            number %= 100;
-        }
-
-        if (number > 0) {
-            if (words !== "") {
-                words += "and ";
-            }
-
-            if (number >= 20) {
-                words += tens[Math.floor(number / 10)] + " ";
-                number %= 10;
-            }
-
-            if (number > 0) {
-                if (number >= 11 && number <= 19) {
-                    words += teens[number - 10] + " ";
-                } else {
-                    words += ones[number] + " ";
-                }
-            }
-        }
-
-        return words.trim();
-    }
-</script>
 </body>
 </html>
