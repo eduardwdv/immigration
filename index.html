@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>NI Standardizer</title>
@@ -25,20 +24,19 @@
         }
         .input-container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
         }
         input[type="text"], textarea {
-            flex-grow: 1;
+            width: 100%;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            margin-right: 10px;
+            margin-bottom: 10px;
         }
         label {
-            flex-grow: 0;
             font-size: 16px;
         }
         button {
@@ -60,22 +58,31 @@
             font-size: 18px;
             color: #333;
         }
-        /* Estilo adicional para a saída UPPERCASE */
+        /* Additional style for UPPERCASE result */
         .resultado-uppercase {
             font-size: 18px;
             margin-top: 20px;
             font-weight: bold;
             color: #333;
         }
+        .note {
+            font-size: 14px;
+            color: #777;
+            text-align: left;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>NI Standardizer</h1>
+        <div class="note">NOTE: For names with small prefixes like "de," "das," or "da" (e.g., "de Oliveira" or "das Chagas"), please add them manually.</div>
         <div class="input-container">
             <input type="text" id="nome" placeholder="Enter the full name">
             <label for="removerAcentos">Remove Accentuation</label>
             <input type="checkbox" id="removerAcentos" checked>
+            <label for="removerEspacos">Remove Extra Spaces</label>
+            <input type="checkbox" id="removerEspacos" checked>
         </div>
         <button onclick="formatName()">STANDARDIZER</button>
         <div class="resultado" id="result"></div>
@@ -83,26 +90,52 @@
 
     <div class="container">
         <h1>NI Standardizer (Duplicate Handling)</h1>
+        <div class="note">NOTE: For names with small prefixes like "de," "das," or "da" (e.g., "de Oliveira" or "das Chagas"), please add them manually.</div>
         <div class="input-container">
             <input type="text" id="spanishName" placeholder="Enter the full name">
             <label for="removerAcentosSpanish">Remove Accentuation</label>
             <input type="checkbox" id="removerAcentosSpanish" checked>
+            <label for="removerEspacosSpanish">Remove Extra Spaces</label>
+            <input type="checkbox" id="removerEspacosSpanish" checked>
         </div>
-        <button onclick="formatSpanishName()">STANDARDIZER</button>
+        <button onclick="standardizeSpanishName()">STANDARDIZER</button>
         <div class="resultado" id="result-spanish"></div>
     </div>
 
     <div class="container">
         <h1>UPPERCASE and Lowercase ONE CLICK</h1>
+        <div class="note">NOTE: You can transform text to uppercase, lowercase, or capitalize words. Remove accentuation and spaces as needed.</div>
         <div class="input-container">
             <textarea id="textToTransform" placeholder="Paste the text here"></textarea>
             <label for="removerAcentosTransform">Remove Accentuation</label>
             <input type="checkbox" id="removerAcentosTransform" checked>
+            <label for="removeSpacesTransform">Remove All Spaces</label>
+            <input type="checkbox" id="removeSpacesTransform">
         </div>
         <button onclick="transformToUppercase()">UPPERCASE IT</button>
         <button onclick="transformToLowercase()">lowercase it</button>
-        <button onclick="capitalizeWords()">Capitalize Words</button> <!-- New button for capitalizing words -->
+        <button onclick="capitalizeWords()">Capitalize Words</button> <!-- i hope that can help us -->
         <div class="resultado" id="result-transform"></div>
+    </div>
+
+    <div class="container">
+        <h1>Remove Accents, Spaces, Special Characters</h1>
+        <div class="note">NOTE: Customize text processing by selecting options below.</div>
+        <div class="input-container">
+            <textarea id="textToRemoveSpaces" placeholder="Paste the text here"></textarea>
+            <label for="removeAccentsSpaces">Remove Accentuation</label>
+            <input type="checkbox" id="removeAccentsSpaces" checked>
+            <label for="removeSpacesSpaces">Remove All Spaces</label>
+            <input type="checkbox" id="removeSpacesSpaces" checked>
+            <label for="removeSpecialChars">Remove Special Characters</label>
+            <input type="checkbox" id="removeSpecialChars" checked>
+            <label for="removeLettersSpaces">Remove Letters</label>
+            <input type="checkbox" id="removeLettersSpaces" checked>
+            <label for="removeNumbersSpaces">Remove Numbers</label>
+            <input type="checkbox" id="removeNumbersSpaces">
+        </div>
+        <button onclick="removeAccentsSpacesSpecialChars()">PROCESS</button>
+        <div class="resultado" id="result-spaces"></div>
     </div>
 
     <script>
@@ -113,12 +146,18 @@
         function formatName() {
             const nameInput = document.getElementById("nome");
             const removeAccentsCheckbox = document.getElementById("removerAcentos");
+            const removeSpacesCheckbox = document.getElementById("removerEspacos");
             const resultDiv = document.getElementById("result");
 
-            // Gets the input value and removes accents if the option is checked
+            // Get the input value and remove accents if the option is checked
             let name = nameInput.value;
             if (removeAccentsCheckbox.checked) {
                 name = removeAccents(name);
+            }
+
+            // Remove extra spaces if the option is checked
+            if (removeSpacesCheckbox.checked) {
+                name = name.trim().replace(/\s+/g, " ");
             }
 
             // Break it down into words
@@ -139,55 +178,21 @@
             }
         }
 
-        function transformToUppercase() {
-            const textToTransformInput = document.getElementById("textToTransform");
-            const removeAccentsCheckbox = document.getElementById("removerAcentosTransform");
-            const resultDiv = document.getElementById("result-transform");
-
-            // Gets the text value
-            let text = textToTransformInput.value;
-
-            // Removes accents if the option is checked
-            if (removeAccentsCheckbox.checked) {
-                text = removeAccents(text);
-            }
-
-            // Turns text into capital letters
-            const uppercaseText = text.toUpperCase();
-
-            // Displays the result
-            resultDiv.textContent = uppercaseText;
-        }
-
-        function transformToLowercase() {
-            const textToTransformInput = document.getElementById("textToTransform");
-            const removeAccentsCheckbox = document.getElementById("removerAcentosTransform");
-            const resultDiv = document.getElementById("result-transform");
-
-            // Gets the text value
-            let text = textToTransformInput.value;
-
-            // Removes accents if the option is checked
-            if (removeAccentsCheckbox.checked) {
-                text = removeAccents(text);
-            }
-
-            // Turns text into lowercase
-            const lowercaseText = text.toLowerCase();
-
-            // Displays the result
-            resultDiv.textContent = lowercaseText;
-        }
-
-        function formatSpanishName() {
+        function standardizeSpanishName() {
             const spanishNameInput = document.getElementById("spanishName");
             const removeAccentsCheckbox = document.getElementById("removerAcentosSpanish");
+            const removeSpacesCheckbox = document.getElementById("removerEspacosSpanish");
             const resultDiv = document.getElementById("result-spanish");
 
-            // Gets the input value and removes accents if the option is checked
+            // Get the input value and remove accents if the option is checked
             let name = spanishNameInput.value;
             if (removeAccentsCheckbox.checked) {
                 name = removeAccents(name);
+            }
+
+            // Remove extra spaces if the option is checked
+            if (removeSpacesCheckbox.checked) {
+                name = name.trim().replace(/\s+/g, " ");
             }
 
             // Break it down into words
@@ -225,18 +230,69 @@
             }
         }
 
-        // Capitalizing words
+        function transformToUppercase() {
+            const textToTransformInput = document.getElementById("textToTransform");
+            const removeAccentsCheckbox = document.getElementById("removerAcentosTransform");
+            const removeSpacesCheckbox = document.getElementById("removeSpacesTransform");
+            const resultDiv = document.getElementById("result-transform");
+
+            // Gets the text value and removes accents if the option is checked
+            let text = textToTransformInput.value;
+            if (removeAccentsCheckbox.checked) {
+                text = removeAccents(text);
+            }
+
+            // Remove all spaces if the option is checked
+            if (removeSpacesCheckbox.checked) {
+                text = text.replace(/\s+/g, "");
+            }
+
+            // Turns text into capital letters
+            const uppercaseText = text.toUpperCase();
+
+            // Displays the result
+            resultDiv.textContent = uppercaseText;
+        }
+
+        function transformToLowercase() {
+            const textToTransformInput = document.getElementById("textToTransform");
+            const removeAccentsCheckbox = document.getElementById("removerAcentosTransform");
+            const removeSpacesCheckbox = document.getElementById("removeSpacesTransform");
+            const resultDiv = document.getElementById("result-transform");
+
+            // Gets the text value and removes accents if the option is checked
+            let text = textToTransformInput.value;
+            if (removeAccentsCheckbox.checked) {
+                text = removeAccents(text);
+            }
+
+            // Remove all spaces if the option is checked
+            if (removeSpacesCheckbox.checked) {
+                text = text.replace(/\s+/g, "");
+            }
+
+            // Turns text into lowercase
+            const lowercaseText = text.toLowerCase();
+
+            // Displays the result
+            resultDiv.textContent = lowercaseText;
+        }
+
         function capitalizeWords() {
             const textToTransformInput = document.getElementById("textToTransform");
             const removeAccentsCheckbox = document.getElementById("removerAcentosTransform");
+            const removeSpacesCheckbox = document.getElementById("removeSpacesTransform");
             const resultDiv = document.getElementById("result-transform");
 
-            // Gets the text value
+            // Gets the text value and removes accents if the option is checked
             let text = textToTransformInput.value;
-
-            // Removes accents if the option is checked
             if (removeAccentsCheckbox.checked) {
                 text = removeAccents(text);
+            }
+
+            // Remove all spaces if the option is checked
+            if (removeSpacesCheckbox.checked) {
+                text = text.replace(/\s+/g, "");
             }
 
             // Splits the text into words
@@ -252,6 +308,45 @@
 
             // Displays the result
             resultDiv.textContent = resultText;
+        }
+
+        function removeAccentsSpacesSpecialChars() {
+            const textToRemoveSpacesInput = document.getElementById("textToRemoveSpaces");
+            const removeAccentsSpacesCheckbox = document.getElementById("removeAccentsSpaces");
+            const removeSpacesSpacesCheckbox = document.getElementById("removeSpacesSpaces");
+            const removeSpecialCharsCheckbox = document.getElementById("removeSpecialChars");
+            const removeLettersCheckbox = document.getElementById("removeLettersSpaces");
+            const removeNumbersCheckbox = document.getElementById("removeNumbersSpaces");
+            const resultDiv = document.getElementById("result-spaces");
+
+            // Gets the text value and removes accents if the option is checked
+            let text = textToRemoveSpacesInput.value;
+            if (removeAccentsSpacesCheckbox.checked) {
+                text = removeAccents(text);
+            }
+
+            // Remove all spaces if the option is checked
+            if (removeSpacesSpacesCheckbox.checked) {
+                text = text.replace(/\s+/g, "");
+            }
+
+            // Remove special characters if the option is checked
+            if (removeSpecialCharsCheckbox.checked) {
+                text = text.replace(/[^\w\s]/g, "");
+            }
+
+            // Remove letters if the option is checked
+            if (removeLettersCheckbox.checked) {
+                text = text.replace(/[a-zA-Z]/g, "");
+            }
+
+            // Remove numbers if the option is checked
+            if (removeNumbersCheckbox.checked) {
+                text = text.replace(/[0-9]/g, "");
+            }
+
+            // Display the result
+            resultDiv.textContent = text;
         }
     </script>
 </body>
