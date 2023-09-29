@@ -1,7 +1,8 @@
 <html>
 <head>
-    <title>NI Standardizer</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NI Standardizer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,7 +48,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.1s ease;
         }
         button:hover {
             background-color: #6a2c2d;
@@ -57,6 +58,20 @@
             font-weight: bold;
             font-size: 18px;
             color: #333;
+        }
+        .copy-code {
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #1162db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        .copy-code.clicked {
+            background-color: #f90003; /* Copied Successfully */
         }
         /* Additional style for UPPERCASE result */
         .resultado-uppercase {
@@ -86,6 +101,7 @@
         </div>
         <button onclick="formatName()">STANDARDIZER</button>
         <div class="resultado" id="result"></div>
+        <button class="copy-code" onclick="copyCode('result')">Copy to Clipboard</button>
     </div>
 
     <div class="container">
@@ -100,6 +116,7 @@
         </div>
         <button onclick="standardizeSpanishName()">STANDARDIZER</button>
         <div class="resultado" id="result-spanish"></div>
+        <button class="copy-code" onclick="copyCode('result-spanish')">Copy to Clipboard</button>
     </div>
 
     <div class="container">
@@ -114,8 +131,9 @@
         </div>
         <button onclick="transformToUppercase()">UPPERCASE IT</button>
         <button onclick="transformToLowercase()">lowercase it</button>
-        <button onclick="capitalizeWords()">Capitalize Words</button> <!-- i hope that can help us -->
+        <button onclick="capitalizeWords()">Capitalize Words</button>
         <div class="resultado" id="result-transform"></div>
+        <button class="copy-code" onclick="copyCode('result-transform')">Copy to Clipboard</button>
     </div>
 
     <div class="container">
@@ -136,6 +154,7 @@
         </div>
         <button onclick="removeAccentsSpacesSpecialChars()">PROCESS</button>
         <div class="resultado" id="result-spaces"></div>
+        <button class="copy-code" onclick="copyCode('result-spaces')">Copy to Clipboard</button>
     </div>
 
     <script>
@@ -347,6 +366,25 @@
 
             // Display the result
             resultDiv.textContent = text;
+        }
+
+        function copyCode(elementId) {
+            const resultElement = document.getElementById(elementId);
+            const textArea = document.createElement("textarea");
+            textArea.value = resultElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            // Add class for visual feedback during click
+            const copyButton = event.target;
+            copyButton.classList.add('clicked');
+
+            // Remove the class after a short delay
+            setTimeout(() => {
+                copyButton.classList.remove('clicked');
+            }, 300);
         }
     </script>
 </body>
